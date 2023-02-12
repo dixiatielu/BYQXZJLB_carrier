@@ -10,8 +10,6 @@
  * COMMERCIAL USAGE PROHIBITED | 禁止商用
  */
 
-#include <math.h>
-
 /*宏定义*/
 // 接线时请严格按照下方定义的引脚编号接线
 #define tracePort1 2 // 循迹引脚4个
@@ -66,9 +64,9 @@ bool putMode = false;               // 放置模式
 
 /*常量定义*/
 const float bestCatchDistance = 16; // TODO: 测试并设置最佳抓取距离
-const float bestPutDistance = 16;//TODO: 设置最佳放置距离
-const float catchDiff = 0.5f;     // TODO: 设置抓取允许的误差
-const float putDiff = 0.5f; //TODO: 设置放置允许的误差
+const float bestPutDistance = 16;   // TODO: 设置最佳放置距离
+const float catchDiff = 0.5f;       // TODO: 设置抓取允许的误差
+const float putDiff = 0.5f;         // TODO: 设置放置允许的误差
 
 // Arduino自带初始化函数
 void setup()
@@ -138,7 +136,7 @@ float get_distance_to_catch()
 float get_distance_to_put()
 {
   // TODO: 计算放置时圆柱中心与靶心距离
-  return 3.4E38;// FLOAT_MAX
+  return 3.4E38; // FLOAT_MAX
 }
 // 设置各个马达速度
 void setMotorSpeed(int left1Speed, int left2Speed, int right1Speed, int right2Speed)
@@ -181,7 +179,15 @@ void sharpRightFix()
 {
   return;
 }
-
+// 原地小角度转圈
+void minorLeftTurn()
+{
+  return;
+}
+void minorRightTurn()
+{
+  return;
+}
 // 循迹
 void trace()
 {
@@ -226,7 +232,7 @@ void trace()
   // 向右转弯，传感器0011，十字路口+1
   if (!traceSensor[0] && !traceSensor[1] && traceSensor[2] && traceSensor[3])
   {
-    if (crossCNT >= 2 && !catchMode)//到达第三个路口，且未开启过抓取模式
+    if (crossCNT >= 2 && !catchMode) // 到达第三个路口，且未开启过抓取模式
     {
       catchMode = true; // 开启抓取模式
       startCatch();
@@ -300,16 +306,16 @@ void startCatch()
     }
     stopHere(); // 刹车
   }
-  //到达最佳距离，开始抓取
-  //TODO: 控制舵机抓取
-  //TODO: 原地旋转180度
-  readTraceSensors();//重新获取一次循迹传感器数据
-  while(!(traceSensor[0] | traceSensor[1] | traceSensor[2] | traceSensor[3]))//如果是0000，即在白地上
+  // 到达最佳距离，开始抓取
+  // TODO: 控制舵机抓取
+  // TODO: 原地旋转180度
+  readTraceSensors();                                                          // 重新获取一次循迹传感器数据
+  while (!(traceSensor[0] | traceSensor[1] | traceSensor[2] | traceSensor[3])) // 如果是0000，即在白地上
   {
-    straightForward();//一直直行，直到找到黑线
+    straightForward(); // 一直直行，直到找到黑线
     readTraceSensors();
   }
-  //结束抓取并返回，正常开始循迹。
+  // 结束抓取并返回，正常开始循迹。
   return;
 }
 
@@ -334,7 +340,8 @@ void startPut()
     }
     stopHere(); // 刹车
   }
-  //TODO: 舵机反转，放下圆柱体
-  while(true);// Halt住，不再进行任何操作，结束任务。
+  // TODO: 舵机反转，放下圆柱体
+  while (true)
+    ; // Halt住，不再进行任何操作，结束任务。
   return;
 }
